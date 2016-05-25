@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>DependencyPropertySnippet</Title>
+      <Shortcut>delegaters</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>Operation</ID>
+          <Default>CopyFile</Default>
+        </Literal>
+        <Literal>
+          <ID>Types</ID>
+          <Default>IOwlishFile</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="CSharp" Kind="method body">
+        <![CDATA[abstract public IEnumerable<IOwlishAsyncDelegater<Tuple<$Types$>> $Operation$AsyncDelegaters { get; }
+        $end$]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
