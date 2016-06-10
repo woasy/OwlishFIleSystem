@@ -23,8 +23,8 @@ namespace OwlishFileSystem.Components
         public delegate Task<IOwlishFile> CreateFileAsyncDelegate(IOwlishPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
         public delegate Task<IOwlishDirectory> CreateDirecotryAsyncDelegate(IOwlishPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
 
-        abstract public IEnumerable<IOwlishAsyncDelegater<Tuple<IOwlishFile, IOwlishPath>>> CopyFileAsyncDelegaters { get; }
-        abstract public IEnumerable<IOwlishAsyncDelegater<Tuple<IOwlishDirectory, IOwlishPath>>> CopyDirectoryAsyncDelegaters { get; }
+        abstract public IEnumerable<OwlishCopyFileAsyncGenDelegater> CopyFileAsyncDelegaters { get; }
+        abstract public IEnumerable<OwlishCopyDirectoryAsyncGenDelegater> CopyDirectoryAsyncDelegaters { get; }
         abstract public IEnumerable<IOwlishAsyncDelegater<Tuple<IOwlishFile, IOwlishPath>>> MoveFileAsyncDelegaters { get; }
         abstract public IEnumerable<IOwlishAsyncDelegater<Tuple<IOwlishDirectory, IOwlishPath>>> MoveDirectoryAsyncDelegaters { get; }
         abstract public IEnumerable<IOwlishAsyncDelegater<Tuple<IOwlishFile>>> RemoveFileAsyncDelegaters { get; }
@@ -32,7 +32,6 @@ namespace OwlishFileSystem.Components
         abstract public IEnumerable<IOwlishAsyncDelegater<OwlishFileDelegaterParam>> GetIsFileExistAsyncDelegaters { get; }
         abstract public IEnumerable<IOwlishAsyncDelegater<OwlishDirectoryDelegaterParam>> GetIsDirectoryExistAsyncDelegaters { get; }
         abstract public IEnumerable<IOwlishAsyncDelegater<OwlishPathDelegaterParam>> GetIsPathExistAsyncDelegaters { get; }
-        
         
         private Task<TTaskResult> InvokeImpl<IDelegater, TParam, TTaskResult>(IEnumerable<IDelegater> delegaters, Func<IDelegater, Task<TTaskResult>> invoker, TParam param)
             where IDelegater : IOwlishDelegaterBase<TParam>

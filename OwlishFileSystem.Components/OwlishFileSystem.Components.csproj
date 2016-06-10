@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonOwlishFileSystemHost.cs" />
-    <Compile Include="IOwlishFileSystemDelegaters.cs" />
+    <Compile Include="IOwlishDelegaters.cs" />
     <Compile Include="OwlishCommand.cs" />
     <Compile Include="OwlishCommandParam.cs" />
     <Compile Include="OwlishDelegatedFileSystemHost.cs" />

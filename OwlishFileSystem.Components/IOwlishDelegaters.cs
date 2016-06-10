@@ -37,16 +37,16 @@ namespace OwlishFileSystem.Components
         }
     }
 
-    public class OwlishActionGenDelegaterBase<TParam> : OwlishFuncGenDelegaterBase<TParam, object>
+    public class OwlishActionGenDelegaterBase<TParams> : OwlishFuncGenDelegaterBase<TParams, object>
     {
-        new public delegate Task InvokeDelegate(TParam param, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
+        new public delegate Task InvokeDelegate(TParams param, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
 
         public OwlishActionGenDelegaterBase(IsTargetDelegate isTarget, InvokeDelegate invoker)
             :base(isTarget, ConvertFuncInvoker(invoker))
         {
         }
 
-        private static OwlishFuncGenDelegaterBase<TParam, object>.InvokeDelegate ConvertFuncInvoker(InvokeDelegate invoker)
+        private static OwlishFuncGenDelegaterBase<TParams, object>.InvokeDelegate ConvertFuncInvoker(InvokeDelegate invoker)
         {
             return async (p, o, ct) => { await invoker(p, o, ct); return null; };
         }
@@ -98,9 +98,7 @@ namespace OwlishFileSystem.Components
 
     }
 
-    public class OwlishCopyFileAsyncGenDelegater<TFile, TPath> : OwlishActionGenDelegater<TFile, TPath>
-        where TFile : IOwlishFile
-        where TPath : IOwlishPath
+    public class OwlishCopyFileAsyncGenDelegater : OwlishActionGenDelegater<IOwlishFile, IOwlishPath>
     {
         public OwlishCopyFileAsyncGenDelegater(InvokeDelegate invoker)
             : base(invoker)
@@ -108,9 +106,7 @@ namespace OwlishFileSystem.Components
         }
     }
 
-    public class OwlishCopyDirectoryAsyncGenDelegater<TDirectory, TPath> : OwlishActionGenDelegater<IOwlishDirectory, IOwlishPath>
-        where TDirectory : IOwlishDirectory
-        where TPath : IOwlishPath
+    public class OwlishCopyDirectoryAsyncGenDelegater : OwlishActionGenDelegater<IOwlishDirectory, IOwlishPath>
     {
         public OwlishCopyDirectoryAsyncGenDelegater(InvokeDelegate invoker)
             :base(invoker)
