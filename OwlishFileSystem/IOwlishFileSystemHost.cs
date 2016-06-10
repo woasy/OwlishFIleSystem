@@ -23,13 +23,13 @@ namespace OwlishFileSystem
         Task MoveDirectoryAsync(IOwlishDirectory directory, IOwlishPath newPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
         Task RemoveFileAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
         Task RemoveDirectoryAsync(IOwlishDirectory directory, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task<bool> GetIsFileExisitAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task<bool> GetIsDirectoryExisitAsync(IOwlishDirectory directory, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task<PathExistResult> GetIsPathExisitAsync(IOwlishPath directoryPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
+        Task<bool> GetIsFileExistAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
+        Task<bool> GetIsDirectoryExistAsync(IOwlishDirectory directory, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
+        Task<PathExistResult> GetIsPathExistAsync(IOwlishPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
         Task<System.IO.Stream> GetFileStreamToReadAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
         Task<System.IO.Stream> GetFileStreamToWriteAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct, bool append = false);
         Task<IOwlishFile> CreateFileAsync(IOwlishPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task<IOwlishDirectory> CreateDirecotryAsync(IOwlishPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
+        Task<IOwlishDirectory> CreateDirectryAsync(IOwlishPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
     }
 
     public static class IOwlishFileSystemHostExtentions
@@ -56,17 +56,17 @@ namespace OwlishFileSystem
 
         public static Task<bool> GetIsFileExisitAsync(this IOwlishFileSystemHost _this, IOwlishFile file, CancellationToken ct)
         {
-            return _this.GetIsFileExisitAsync(file, new BlankObserver<object>(), ct);
+            return _this.GetIsFileExistAsync(file, new BlankObserver<object>(), ct);
         }
 
         public static Task<bool> GetIsDirectoryExisitAsync(this IOwlishFileSystemHost _this, IOwlishDirectory directory, CancellationToken ct)
         {
-            return _this.GetIsDirectoryExisitAsync(directory, new BlankObserver<object>(), ct);
+            return _this.GetIsDirectoryExistAsync(directory, new BlankObserver<object>(), ct);
         }
 
         public static Task<PathExistResult> GetIsPathExisitAsync(this IOwlishFileSystemHost _this, IOwlishPath directoryPath, CancellationToken ct)
         {
-            return _this.GetIsPathExisitAsync(directoryPath, new BlankObserver<object>(), ct);
+            return _this.GetIsPathExistAsync(directoryPath, new BlankObserver<object>(), ct);
         }
 
         public static Task<System.IO.Stream> GetFileStreamToReadAsync(this IOwlishFileSystemHost _this, IOwlishFile file, CancellationToken ct)
@@ -86,7 +86,7 @@ namespace OwlishFileSystem
 
         public static Task<IOwlishDirectory> CreateDirecotryAsync(this IOwlishFileSystemHost _this, IOwlishPath path, CancellationToken ct)
         {
-            return _this.CreateDirecotryAsync(path, new BlankObserver<object>(), ct);
+            return _this.CreateDirectryAsync(path, new BlankObserver<object>(), ct);
         }
     }
 }

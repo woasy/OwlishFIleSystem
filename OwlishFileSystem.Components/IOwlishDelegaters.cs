@@ -67,16 +67,28 @@ namespace OwlishFileSystem.Components
 
     public class OwlishActionGenDelegater<TParam> : OwlishActionGenDelegaterBase<Tuple<TParam>>
     {
-        public OwlishActionGenDelegater(InvokeDelegate invoker)
-            : base(OwlishGenStaticComponents.IsTargetImpl<TParam>, invoker)
+        public delegate Task InharitedInvokeDelegate<TInharit>(TInharit param, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
+
+        public OwlishActionGenDelegater(IsTargetDelegate istarget, InvokeDelegate invoker)
+            :base(istarget, invoker)
         {
+        }
+
+        public OwlishActionGenDelegater(InvokeDelegate invoker)
+            : this(OwlishGenStaticComponents.IsTargetImpl, invoker)
+        {
+        }
+
+        public OwlishActionGenDelegater<TParam> CreateInharited<TInharit>(InharitedInvokeDelegate<TInharit> invoker)
+        {
+
         }
     }
 
     public class OwlishActionGenDelegater<TParam1, TParam2> : OwlishActionGenDelegaterBase<Tuple<TParam1, TParam2>>
     {
         public OwlishActionGenDelegater(InvokeDelegate invoker)
-            : base(OwlishGenStaticComponents.IsTargetImpl<TParam1, TParam2>, invoker)
+            : base(OwlishGenStaticComponents.IsTargetImpl, invoker)
         {
         }
     }
@@ -84,7 +96,7 @@ namespace OwlishFileSystem.Components
     public class OwlishFuncGenDelegater<TParam, TResult> : OwlishFuncGenDelegaterBase<Tuple<TParam>, TResult>
     {
         public OwlishFuncGenDelegater(InvokeDelegate invoker)
-            : base(OwlishGenStaticComponents.IsTargetImpl<TParam>, invoker)
+            : base(OwlishGenStaticComponents.IsTargetImpl, invoker)
         {
         }
     }
@@ -92,26 +104,10 @@ namespace OwlishFileSystem.Components
     public class OwlishFuncGenDelegater<TParam1, TParam2, TResult> : OwlishFuncGenDelegaterBase<Tuple<TParam1, TParam2>, TResult>
     {
         public OwlishFuncGenDelegater(InvokeDelegate invoker)
-            : base(OwlishGenStaticComponents.IsTargetImpl<TParam1, TParam2>, invoker)
+            : base(OwlishGenStaticComponents.IsTargetImpl, invoker)
         {
         }
 
-    }
-
-    public class OwlishCopyFileAsyncGenDelegater : OwlishActionGenDelegater<IOwlishFile, IOwlishPath>
-    {
-        public OwlishCopyFileAsyncGenDelegater(InvokeDelegate invoker)
-            : base(invoker)
-        {
-        }
-    }
-
-    public class OwlishCopyDirectoryAsyncGenDelegater : OwlishActionGenDelegater<IOwlishDirectory, IOwlishPath>
-    {
-        public OwlishCopyDirectoryAsyncGenDelegater(InvokeDelegate invoker)
-            :base(invoker)
-        {
-        }
     }
 
     

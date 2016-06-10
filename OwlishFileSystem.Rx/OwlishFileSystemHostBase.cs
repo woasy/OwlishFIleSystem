@@ -39,7 +39,7 @@ namespace OwlishFileSystem.Rx
             }
             if (error != null)
             {
-                if (await this.GetIsFileExisitAsync(nf, progressObserver, ct))
+                if (await this.GetIsFileExistAsync(nf, progressObserver, ct))
                 {
 
                 }
@@ -48,7 +48,7 @@ namespace OwlishFileSystem.Rx
 
         virtual public async Task CopyDirectoryAsync(IOwlishDirectory directory, IOwlishPath newPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
         {
-            await this.CreateDirecotryAsync(newPath, progressObserver, ct);
+            await this.CreateDirectryAsync(newPath, progressObserver, ct);
             foreach (var subdir in directory.EnumerateSubDirectories())
             {
                 ct.ThrowIfCancellationRequested();
@@ -81,17 +81,17 @@ namespace OwlishFileSystem.Rx
             throw new NotImplementedException();
         }
 
-        virtual public Task<bool> GetIsFileExisitAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
+        virtual public Task<bool> GetIsFileExistAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        virtual public Task<bool> GetIsDirectoryExisitAsync(IOwlishDirectory directory, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
+        virtual public Task<bool> GetIsDirectoryExistAsync(IOwlishDirectory directory, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        virtual public Task<PathExistResult> GetIsPathExisitAsync(IOwlishPath directoryPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
+        virtual public Task<PathExistResult> GetIsPathExistAsync(IOwlishPath directoryPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
@@ -111,7 +111,17 @@ namespace OwlishFileSystem.Rx
             throw new NotImplementedException();
         }
 
-        virtual public Task<IOwlishDirectory> CreateDirecotryAsync(IOwlishPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
+        virtual public Task<IOwlishDirectory> CreateDirectryAsync(IOwlishPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveFileAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveDirectoryAsync(IOwlishDirectory directory, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
         {
             throw new NotImplementedException();
         }

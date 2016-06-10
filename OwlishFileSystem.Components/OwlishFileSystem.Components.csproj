@@ -39,11 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommonOwlishFileSystemHost.cs" />
     <Compile Include="IOwlishDelegaters.cs" />
     <Compile Include="OwlishCommand.cs" />
     <Compile Include="OwlishCommandParam.cs" />
     <Compile Include="OwlishDelegatedFileSystemHost.cs" />
+    <Compile Include="OwlishDelegater.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnsupportedTypeOfOwlishFileSystemDelegateException.cs" />
   </ItemGroup>
