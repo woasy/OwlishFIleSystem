@@ -42,9 +42,14 @@
     <Compile Include="IOwlishDelegaters.cs" />
     <Compile Include="OwlishCommand.cs" />
     <Compile Include="OwlishCommandParam.cs" />
-    <Compile Include="OwlishDelegatedFileSystemHost.cs" />
+    <Compile Include="Primitive\IAggregatableOwlishDelegaters.cs" />
+    <Compile Include="Primitive\IOwlishDelegaters.cs" />
+    <Compile Include="Primitive\OwlishDelegatersAggregater.cs" />
+    <Compile Include="Primitive\IOwlishDelegatersKey.cs" />
+    <Compile Include="Primitive\OwlishDelegatedFileSystemHost.cs" />
     <Compile Include="OwlishDelegater.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BasicOwlishDelegatedFileSystemHost.cs" />
     <Compile Include="UnsupportedTypeOfOwlishFileSystemDelegateException.cs" />
   </ItemGroup>
   <ItemGroup>

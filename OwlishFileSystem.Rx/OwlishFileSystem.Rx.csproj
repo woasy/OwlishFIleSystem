@@ -55,8 +55,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAggregatableOwlishProgressObservable.cs" />
+    <Compile Include="IAggregatableOwlishProgressObserver.cs" />
     <Compile Include="OwlishFileSystemHostBase.cs" />
-    <Compile Include="ProgressAggregater.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

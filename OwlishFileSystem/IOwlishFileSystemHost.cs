@@ -17,8 +17,6 @@ namespace OwlishFileSystem
 
     public interface IOwlishFileSystemHost
     {
-        Task CopyFileAsync(IOwlishFile file, IOwlishPath newPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task CopyDirectoryAsync(IOwlishDirectory directory, IOwlishPath newPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
         Task MoveFileAsync(IOwlishFile file, IOwlishPath newPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
         Task MoveDirectoryAsync(IOwlishDirectory directory, IOwlishPath newPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
         Task RemoveFileAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
@@ -32,18 +30,9 @@ namespace OwlishFileSystem
         Task<IOwlishDirectory> CreateDirectryAsync(IOwlishPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
     }
 
+
     public static class IOwlishFileSystemHostExtentions
     {
-        public static Task CopyFileAsync(this IOwlishFileSystemHost _this, IOwlishFile file, IOwlishPath newPath, CancellationToken ct)
-        {
-            return _this.CopyFileAsync(file, newPath, new BlankObserver<OwlishProgress>(), ct);
-        }
-
-        public static Task CopyDirectoryAsync(this IOwlishFileSystemHost _this, IOwlishDirectory directory, IOwlishPath newPath, CancellationToken ct)
-        {
-            return _this.CopyDirectoryAsync(directory, newPath, new BlankObserver<OwlishProgress>(), ct);
-        }
-
         public static Task MoveFileAsync(this IOwlishFileSystemHost _this, IOwlishFile file, IOwlishPath newPath, CancellationToken ct)
         {
             return _this.MoveFileAsync(file, newPath, new BlankObserver<OwlishProgress>(), ct);

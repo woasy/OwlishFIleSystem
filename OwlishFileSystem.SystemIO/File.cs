@@ -5,20 +5,21 @@ using System.Text;
 
 namespace OwlishFileSystem.SystemIO
 {
-    public class File : FileSystemObject
+    public class File : FileSystemObject, IOwlishFile
     {
-        public File(string path)
-            : base(new Path(path))
-        {
-        }
-        public File(Path path)
-            : base(path)
+        public File(string p)
+            :base(p)
         {
         }
 
         public long GetSize()
         {
             throw new NotImplementedException();
+        }
+
+        protected override string ConvertPathToName(string v)
+        {
+            return System.IO.Path.GetFileName(v);
         }
     }
 }

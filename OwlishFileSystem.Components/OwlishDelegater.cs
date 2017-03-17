@@ -40,11 +40,5 @@ namespace OwlishFileSystem.Components
         {
             return delegaters.InvokeIfHasTarget(new Tuple<TParam1, TParam2>(param1, param2), progressObserver, ct);
         }
-
-        public static void AddDelegate<TParam, TActParam>(this ICollection<OwlishActionGenDelegater<TParam>> delegaters, OwlishActionGenDelegater<TActParam>.InvokeDelegate action)
-            where TActParam : TParam
-        {
-            delegaters.Add(new OwlishActionGenDelegater<TActParam>(action));
-        }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OwlishFileSystem.SystemIO
 {
-    public class FileSystemObject : IOwlishObject
+    public abstract class FileSystemObject : IOwlishObject
     {
         public event EventHandler<PropertyUpdatedEventArgs> PropertyUpdated;
 
@@ -18,8 +18,10 @@ namespace OwlishFileSystem.SystemIO
         {
             this.FileSystemHost = FileSystemHost.Instance;
             this.Path = path;
-            this.Name = System.IO.Path.GetDirectoryName(path.ToString());
+            this.Name = ConvertPathToName(path.ToString());
         }
+
+        abstract protected string ConvertPathToName(string v);
 
         public FileSystemHost FileSystemHost { get; private set; }
         public Path Path { get; private set; }

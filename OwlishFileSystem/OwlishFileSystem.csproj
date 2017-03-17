@@ -40,6 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlankObserver.cs" />
+    <Compile Include="Generic\InvalidTypeOfOwlishFileSystemException.cs" />
+    <Compile Include="Generic\IOwlishFileSystemHost.cs" />
+    <Compile Include="Generic\OwlishFileSystemHost.cs" />
     <Compile Include="IOwlishDirectory.cs" />
     <Compile Include="IOwlishFile.cs" />
     <Compile Include="OwlishProgresses.cs" />
@@ -49,7 +52,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyUpdatedEventArgs.cs" />
     <Compile Include="SystemExtentions.cs" />
-    <Compile Include="UnsupportedTypeOfOwlishFileSystemDelegateException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

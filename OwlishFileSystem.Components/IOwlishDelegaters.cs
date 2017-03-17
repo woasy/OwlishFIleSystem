@@ -67,8 +67,6 @@ namespace OwlishFileSystem.Components
 
     public class OwlishActionGenDelegater<TParam> : OwlishActionGenDelegaterBase<Tuple<TParam>>
     {
-        public delegate Task InharitedInvokeDelegate<TInharit>(TInharit param, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-
         public OwlishActionGenDelegater(IsTargetDelegate istarget, InvokeDelegate invoker)
             :base(istarget, invoker)
         {
@@ -77,11 +75,6 @@ namespace OwlishFileSystem.Components
         public OwlishActionGenDelegater(InvokeDelegate invoker)
             : this(OwlishGenStaticComponents.IsTargetImpl, invoker)
         {
-        }
-
-        public OwlishActionGenDelegater<TParam> CreateInharited<TInharit>(InharitedInvokeDelegate<TInharit> invoker)
-        {
-
         }
     }
 
