@@ -10,8 +10,7 @@ namespace OwlishFileSystem
     public interface IOwlishObject
     {
         event EventHandler<PropertyUpdatedEventArgs> PropertyUpdated;
-
-        IOwlishFileSystemHost FileSystemHost { get; }
+        
         IOwlishPath Path { get; }
         string Name { get; }
 

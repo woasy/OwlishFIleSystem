@@ -7,14 +7,9 @@ namespace OwlishFileSystem.SystemIO
 {
     public class File : FileSystemObject, IOwlishFile
     {
-        public File(string p)
+        public File(Path p)
             :base(p)
         {
-        }
-
-        public long GetSize()
-        {
-            throw new NotImplementedException();
         }
 
         protected override string ConvertPathToName(string v)

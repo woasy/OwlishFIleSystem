@@ -8,8 +8,5 @@ namespace OwlishFileSystem
 {
     public interface IOwlishDirectory : IOwlishObject
     {
-        IEnumerable<IOwlishObject> EnumerateSubObjects();
-        IEnumerable<IOwlishDirectory> EnumerateSubDirectories();
-        IEnumerable<IOwlishFile> EnumerateSubFiles();
     }
 }

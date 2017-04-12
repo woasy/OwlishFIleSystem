@@ -7,6 +7,6 @@ namespace OwlishFileSystem
 {
     public interface IOwlishPath
     {
-        IOwlishPath CreateCombinedPath(params string[] p);
+        IOwlishFileSystemHost Host { get; }
     }
 }

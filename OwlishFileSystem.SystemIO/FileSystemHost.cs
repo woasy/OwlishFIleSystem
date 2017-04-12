@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OwlishFileSystem.SystemIO
 {
-    public sealed class FileSystemHost : OwlishFileSystem.Generic.OwlishFileSystemHost<File, Directory, Path>
+    public sealed class FileSystemHost : Generic.OwlishFileSystemHost<File, Directory, Path>
     {
         private FileSystemHost()
         {
@@ -28,59 +28,80 @@ namespace OwlishFileSystem.SystemIO
             }
         }
 
-        public override Task<Directory> CreateDirectryAsync(Path path, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
+        public override Directory CreateDirectryAsync(Path path, CancellationToken ct)
+        {
+            var di = System.IO.Directory.CreateDirectory(path.ToString());
+            return new Directory(new Path(this, di.FullName));
+        }
+
+        public override Stream OpenFileToReadAsync(Path path, CancellationToken ct)
+        {
+            return System.IO.File.OpenRead(path.ToString());
+        }
+
+        public override Stream OpenFileToWriteAsync(Path path, CancellationToken ct, bool append = false)
+        {
+            return System.IO.File.OpenWrite(path.ToString());
+        }
+
+        public override bool GetIsDirectoryExistAsync(Path path, CancellationToken ct)
+        {
+            return System.IO.Directory.Exists(path.ToString());
+        }
+
+        public override bool GetIsFileExistAsync(Path path, CancellationToken ct)
+        {
+            return System.IO.File.Exists(path.ToString());
+        }
+
+        public override PathExistResult GetIsPathExistAsync(Path path, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<File> CreateFileAsync(Path path, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
+        public override void MoveDirectoryAsync(Directory directory, Path newPath, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<Stream> GetFileStreamToReadAsync(File file, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
+        public override void MoveFileAsync(File file, Path newPath, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<Stream> GetFileStreamToWriteAsync(File file, IObserver<OwlishProgress> progressObserver, CancellationToken ct, bool append = false)
+        public override void RemoveDirectoryAsync(Directory directory, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<bool> GetIsDirectoryExistAsync(Directory directory, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
+        public override void RemoveFileAsync(File file, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<bool> GetIsFileExistAsync(File file, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
+        public override IOwlishPropertyValue GetProperty(File target, IOwlishProperty property, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<PathExistResult> GetIsPathExistAsync(Path path, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
+        public override IOwlishPropertyValue GetProperty(Directory directory, IOwlishProperty property, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public override Task MoveDirectoryAsync(Directory directory, Path newPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
+        public override IEnumerable<IOwlishObject> EnumerateObjects(Directory directory, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            return EnumerateDirectories(directory, ct).Cast<IOwlishObject>().Concat(EnumerateFiles(directory, ct));
         }
 
-        public override Task MoveFileAsync(File file, Path newPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
+        public override IEnumerable<File> EnumerateFiles(IOwlishDirectory directory, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            return System.IO.Directory.EnumerateFiles(directory.Path.ToString()).Select(p => new File(new Path(this, p)));
         }
 
-        public override Task RemoveDirectoryAsync(Directory directory, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
+        public override IEnumerable<Directory> EnumerateDirectories(IOwlishDirectory directory, CancellationToken ct)
         {
-            throw new NotImplementedException();
-        }
-
-        public override Task RemoveFileAsync(File file, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
-        {
-            throw new NotImplementedException();
+            return System.IO.Directory.EnumerateDirectories(directory.Path.ToString()).Select(p => new Directory(new Path(this, p)));
         }
     }
 }

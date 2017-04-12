@@ -13,28 +13,22 @@ namespace OwlishFileSystem.Generic
         where TDirectory : class, IOwlishDirectory
         where TPath : class, IOwlishPath
     {
-        public abstract Task<TDirectory> CreateDirectryAsync(TPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
+        public abstract TDirectory CreateDirectryAsync(TPath path, CancellationToken ct);
+        public abstract Stream OpenFileToReadAsync(TPath path, CancellationToken ct);
+        public abstract Stream OpenFileToWriteAsync(TPath path, CancellationToken ct, bool append = false);
+        public abstract bool GetIsDirectoryExistAsync(TPath path, CancellationToken ct);
+        public abstract bool GetIsFileExistAsync(TPath path, CancellationToken ct);
+        public abstract PathExistResult GetIsPathExistAsync(TPath path, CancellationToken ct);
+        public abstract void MoveDirectoryAsync(TDirectory directory, TPath newPath, CancellationToken ct);
+        public abstract void MoveFileAsync(TFile file, TPath newPath, CancellationToken ct);
+        public abstract void RemoveDirectoryAsync(TDirectory directory, CancellationToken ct);
+        public abstract void RemoveFileAsync(TFile file, CancellationToken ct);
+        public abstract IOwlishPropertyValue GetProperty(TFile target, IOwlishProperty property, CancellationToken ct);
+        public abstract IOwlishPropertyValue GetProperty(TDirectory directory, IOwlishProperty property, CancellationToken ct);
+        public abstract IEnumerable<IOwlishObject> EnumerateObjects(TDirectory directory, CancellationToken ct);
+        public abstract IEnumerable<TFile> EnumerateFiles(IOwlishDirectory directory, CancellationToken ct);
+        public abstract IEnumerable<TDirectory> EnumerateDirectories(IOwlishDirectory directory, CancellationToken ct);
 
-        public abstract Task<TFile> CreateFileAsync(TPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-
-        public abstract Task<Stream> GetFileStreamToReadAsync(TFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-
-        public abstract Task<Stream> GetFileStreamToWriteAsync(TFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct, bool append = false);
-
-        public abstract Task<bool> GetIsDirectoryExistAsync(TDirectory directory, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-
-        public abstract Task<bool> GetIsFileExistAsync(TFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-
-        public abstract Task<PathExistResult> GetIsPathExistAsync(TPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-
-        public abstract Task MoveDirectoryAsync(TDirectory directory, TPath newPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-
-        public abstract Task MoveFileAsync(TFile file, TPath newPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-
-        public abstract Task RemoveDirectoryAsync(TDirectory directory, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-
-        public abstract Task RemoveFileAsync(TFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        
         private TResult CheckType<TResult>(IOwlishFile file, IOwlishDirectory directory, IOwlishPath path, Func<TFile, TDirectory, TPath, TResult> func)
         {
             try
@@ -50,59 +44,54 @@ namespace OwlishFileSystem.Generic
             }
         }
 
-        async Task<IOwlishDirectory> IOwlishFileSystemHost.CreateDirectryAsync(IOwlishPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
+        private void CheckType(IOwlishFile file, IOwlishDirectory directory, IOwlishPath path, Action<TFile, TDirectory, TPath> func)
         {
-            return await CheckType(null, null, path, (f, d, p) => CreateDirectryAsync(p, progressObserver, ct));
+            CheckType<object>(file, directory, path, (f, d, p) => { func(f, d, p); return null; });
         }
 
-        async Task<IOwlishFile> IOwlishFileSystemHost.CreateFileAsync(IOwlishPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
-        {
-            return await CheckType(null, null, path, (f, d, p) => CreateFileAsync(p, progressObserver, ct));
-        }
+        IOwlishDirectory IOwlishFileSystemHost.CreateDirectryAsync(IOwlishPath path, CancellationToken ct)
+            => CheckType(null, null, path, (f, d, p) => CreateDirectryAsync(p, ct));
+        
+        Stream IOwlishFileSystemHost.OpenFileToReadAsync(IOwlishPath path, CancellationToken ct)
+            => CheckType(null, null, path, (f, d, p) => OpenFileToReadAsync(p, ct));
 
-        Task<Stream> IOwlishFileSystemHost.GetFileStreamToReadAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
-        {
-            return CheckType(file, null, null, (f, d, p) => GetFileStreamToReadAsync(f, progressObserver, ct));
-        }
+        Stream IOwlishFileSystemHost.OpenFileToWriteAsync(IOwlishPath path, CancellationToken ct, bool append)
+            => CheckType(null, null, path, (f, d, p) => OpenFileToWriteAsync(p, ct));
 
-        Task<Stream> IOwlishFileSystemHost.GetFileStreamToWriteAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct, bool append)
-        {
-            return CheckType(file, null, null, (f, d, p) => GetFileStreamToWriteAsync(f, progressObserver, ct));
-        }
+        bool IOwlishFileSystemHost.GetIsDirectoryExistAsync(IOwlishPath path, CancellationToken ct)
+            => CheckType(null, null, path, (f, d, p) => GetIsDirectoryExistAsync(p, ct));
 
-        Task<bool> IOwlishFileSystemHost.GetIsDirectoryExistAsync(IOwlishDirectory directory, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
-        {
-            return CheckType(null, directory, null, (f, d, p) => GetIsDirectoryExistAsync(d, progressObserver, ct));
-        }
+        bool IOwlishFileSystemHost.GetIsFileExistAsync(IOwlishPath path, CancellationToken ct)
+            => CheckType(null, null, path, (f, d, p) => GetIsFileExistAsync(p, ct));
 
-        Task<bool> IOwlishFileSystemHost.GetIsFileExistAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
-        {
-            return CheckType(file, null, null, (f, d, p) => GetIsFileExistAsync(f, progressObserver, ct));
-        }
+        PathExistResult IOwlishFileSystemHost.GetIsPathExistAsync(IOwlishPath path, CancellationToken ct)
+            => CheckType(null, null, path, (f, d, p) => GetIsPathExistAsync(p, ct));
 
-        Task<PathExistResult> IOwlishFileSystemHost.GetIsPathExistAsync(IOwlishPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
-        {
-            return CheckType(null, null, path, (f, d, p) => GetIsPathExistAsync(p, progressObserver, ct));
-        }
+        void IOwlishFileSystemHost.MoveDirectoryAsync(IOwlishDirectory directory, IOwlishPath newPath, CancellationToken ct)
+            => CheckType(null, directory, newPath, (f, d, p) => MoveDirectoryAsync(d, p, ct));
 
-        Task IOwlishFileSystemHost.MoveDirectoryAsync(IOwlishDirectory directory, IOwlishPath newPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
-        {
-            return CheckType(null, directory, newPath, (f, d, p) => MoveDirectoryAsync(d, p, progressObserver, ct));
-        }
+        void IOwlishFileSystemHost.MoveFileAsync(IOwlishFile file, IOwlishPath newPath, CancellationToken ct)
+            => CheckType(file, null, newPath, (f, d, p) => MoveFileAsync(f, p, ct));
 
-        Task IOwlishFileSystemHost.MoveFileAsync(IOwlishFile file, IOwlishPath newPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
-        {
-            return CheckType(file, null, newPath, (f, d, p) => MoveFileAsync(f, p, progressObserver, ct));
-        }
+        void IOwlishFileSystemHost.RemoveDirectoryAsync(IOwlishDirectory directory, CancellationToken ct)
+            => CheckType(null, directory, null, (f, d, p) => RemoveDirectoryAsync(d, ct));
 
-        Task IOwlishFileSystemHost.RemoveDirectoryAsync(IOwlishDirectory directory, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
-        {
-            return CheckType(null, directory, null, (f, d, p) => RemoveDirectoryAsync(d, progressObserver, ct));
-        }
+        void IOwlishFileSystemHost.RemoveFileAsync(IOwlishFile file, CancellationToken ct)
+            => CheckType(file, null, null, (f, d, p) => RemoveFileAsync(f, ct));
 
-        Task IOwlishFileSystemHost.RemoveFileAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct)
-        {
-            return CheckType(file, null, null, (f, d, p) => RemoveFileAsync(f, progressObserver, ct));
-        }
+        IOwlishPropertyValue IOwlishFileSystemHost.GetProperty(IOwlishFile target, IOwlishProperty property, CancellationToken ct)
+            => CheckType(target, null, null, (f, d, p) => GetProperty(f, property, ct));
+
+        IOwlishPropertyValue IOwlishFileSystemHost.GetProperty(IOwlishDirectory directory, IOwlishProperty property, CancellationToken ct)
+            => CheckType(null, directory, null, (f, d, p) => GetProperty(d, property, ct));
+
+        IEnumerable<IOwlishObject> IOwlishFileSystemHost.EnumerateObjects(IOwlishDirectory directory, CancellationToken ct)
+            => CheckType(null, directory, null, (f, d, p) => EnumerateObjects(d, ct));
+
+        IEnumerable<IOwlishFile> IOwlishFileSystemHost.EnumerateFiles(IOwlishDirectory directory, CancellationToken ct)
+            => CheckType(null, directory, null, (f, d, p) => EnumerateFiles(d, ct));
+
+        IEnumerable<IOwlishDirectory> IOwlishFileSystemHost.EnumerateDirectories(IOwlishDirectory directory, CancellationToken ct)
+            => CheckType(null, directory, null, (f, d, p) => EnumerateDirectories(d, ct));
     }
 }

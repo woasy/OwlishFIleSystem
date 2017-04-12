@@ -12,16 +12,20 @@ namespace OwlishFileSystem.Generic
         where TDirectory : IOwlishDirectory
         where TPath : IOwlishPath
     {
-        Task MoveFileAsync(TFile file, TPath newPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task MoveDirectoryAsync(TDirectory directory, TPath newPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task RemoveFileAsync(TFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task RemoveDirectoryAsync(TDirectory directory, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task<bool> GetIsFileExistAsync(TFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task<bool> GetIsDirectoryExistAsync(TDirectory directory, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task<PathExistResult> GetIsPathExistAsync(TPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task<System.IO.Stream> GetFileStreamToReadAsync(TFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task<System.IO.Stream> GetFileStreamToWriteAsync(TFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct, bool append = false);
-        Task<TFile> CreateFileAsync(TPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task<TDirectory> CreateDirectryAsync(TPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
+        void MoveFileAsync(TFile file, TPath newPath, CancellationToken ct);
+        void MoveDirectoryAsync(TDirectory directory, TPath newPath, CancellationToken ct);
+        void RemoveFileAsync(TFile file, CancellationToken ct);
+        void RemoveDirectoryAsync(TDirectory directory, CancellationToken ct);
+        bool GetIsFileExistAsync(TPath path, CancellationToken ct);
+        bool GetIsDirectoryExistAsync(TPath path, CancellationToken ct);
+        PathExistResult GetIsPathExistAsync(TPath path, CancellationToken ct);
+        System.IO.Stream OpenFileToReadAsync(TPath path, CancellationToken ct);
+        System.IO.Stream OpenFileToWriteAsync(TPath path, CancellationToken ct, bool append = false);
+        TDirectory CreateDirectryAsync(TPath path, CancellationToken ct);
+        IOwlishPropertyValue GetProperty(TFile target, IOwlishProperty property, CancellationToken ct);
+        IOwlishPropertyValue GetProperty(TDirectory directory, IOwlishProperty property, CancellationToken ct);
+        IEnumerable<IOwlishObject> EnumerateObjects(TDirectory directory, CancellationToken ct);
+        IEnumerable<TFile> EnumerateFiles(IOwlishDirectory directory, CancellationToken ct);
+        IEnumerable<TDirectory> EnumerateDirectories(IOwlishDirectory directory, CancellationToken ct);
     }
 }

@@ -7,75 +7,43 @@ using System.Threading.Tasks;
 
 namespace OwlishFileSystem
 {
-    public enum PathExistResult
+    public class PathExistResult : IEquatable<PathExistResult>
     {
-        None,
-        File,
-        Directory,
-        Other
+        public static readonly PathExistResult None = new PathExistResult();
+        public static readonly PathExistResult File = new PathExistResult();
+        public static readonly PathExistResult Directory = new PathExistResult();
+
+        public virtual bool Equals(PathExistResult other)
+        {
+            if (this == None && other == null)
+            {
+                return true;
+            }
+            else
+            {
+                return this == other;
+            }
+        }
     }
 
     public interface IOwlishFileSystemHost
     {
-        Task MoveFileAsync(IOwlishFile file, IOwlishPath newPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task MoveDirectoryAsync(IOwlishDirectory directory, IOwlishPath newPath, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task RemoveFileAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task RemoveDirectoryAsync(IOwlishDirectory directory, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task<bool> GetIsFileExistAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task<bool> GetIsDirectoryExistAsync(IOwlishDirectory directory, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task<PathExistResult> GetIsPathExistAsync(IOwlishPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task<System.IO.Stream> GetFileStreamToReadAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task<System.IO.Stream> GetFileStreamToWriteAsync(IOwlishFile file, IObserver<OwlishProgress> progressObserver, CancellationToken ct, bool append = false);
-        Task<IOwlishFile> CreateFileAsync(IOwlishPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
-        Task<IOwlishDirectory> CreateDirectryAsync(IOwlishPath path, IObserver<OwlishProgress> progressObserver, CancellationToken ct);
+        void MoveFileAsync(IOwlishFile file, IOwlishPath newPath, CancellationToken ct);
+        void MoveDirectoryAsync(IOwlishDirectory directory, IOwlishPath newPath, CancellationToken ct);
+        void RemoveFileAsync(IOwlishFile file, CancellationToken ct);
+        void RemoveDirectoryAsync(IOwlishDirectory directory, CancellationToken ct);
+        bool GetIsFileExistAsync(IOwlishPath path, CancellationToken ct);
+        bool GetIsDirectoryExistAsync(IOwlishPath path, CancellationToken ct);
+        PathExistResult GetIsPathExistAsync(IOwlishPath path, CancellationToken ct);
+        System.IO.Stream OpenFileToReadAsync(IOwlishPath path, CancellationToken ct);
+        System.IO.Stream OpenFileToWriteAsync(IOwlishPath path, CancellationToken ct, bool append = false);
+        IOwlishDirectory CreateDirectryAsync(IOwlishPath path, CancellationToken ct);
+        IOwlishPropertyValue GetProperty(IOwlishFile target, IOwlishProperty property, CancellationToken ct);
+        IOwlishPropertyValue GetProperty(IOwlishDirectory directory, IOwlishProperty property, CancellationToken ct);
+        IEnumerable<IOwlishObject> EnumerateObjects(IOwlishDirectory directory, CancellationToken ct);
+        IEnumerable<IOwlishFile> EnumerateFiles(IOwlishDirectory directory, CancellationToken ct);
+        IEnumerable<IOwlishDirectory> EnumerateDirectories(IOwlishDirectory directory, CancellationToken ct);
     }
 
 
-    public static class IOwlishFileSystemHostExtentions
-    {
-        public static Task MoveFileAsync(this IOwlishFileSystemHost _this, IOwlishFile file, IOwlishPath newPath, CancellationToken ct)
-        {
-            return _this.MoveFileAsync(file, newPath, new BlankObserver<OwlishProgress>(), ct);
-        }
-
-        public static Task MoveDirectoryAsync(this IOwlishFileSystemHost _this, IOwlishDirectory directory, IOwlishPath newPath, CancellationToken ct)
-        {
-            return _this.MoveDirectoryAsync(directory, newPath, new BlankObserver<object>(), ct);
-        }
-
-        public static Task<bool> GetIsFileExisitAsync(this IOwlishFileSystemHost _this, IOwlishFile file, CancellationToken ct)
-        {
-            return _this.GetIsFileExistAsync(file, new BlankObserver<object>(), ct);
-        }
-
-        public static Task<bool> GetIsDirectoryExisitAsync(this IOwlishFileSystemHost _this, IOwlishDirectory directory, CancellationToken ct)
-        {
-            return _this.GetIsDirectoryExistAsync(directory, new BlankObserver<object>(), ct);
-        }
-
-        public static Task<PathExistResult> GetIsPathExisitAsync(this IOwlishFileSystemHost _this, IOwlishPath directoryPath, CancellationToken ct)
-        {
-            return _this.GetIsPathExistAsync(directoryPath, new BlankObserver<object>(), ct);
-        }
-
-        public static Task<System.IO.Stream> GetFileStreamToReadAsync(this IOwlishFileSystemHost _this, IOwlishFile file, CancellationToken ct)
-        {
-            return _this.GetFileStreamToReadAsync(file, new BlankObserver<object>(), ct);
-        }
-
-        public static Task<System.IO.Stream> GetFileStreamToWriteAsync(this IOwlishFileSystemHost _this, IOwlishFile file, CancellationToken ct, bool append = false)
-        {
-            return _this.GetFileStreamToWriteAsync(file, new BlankObserver<object>(), ct);
-        }
-
-        public static Task<IOwlishFile> CreateFileAsync(this IOwlishFileSystemHost _this, IOwlishPath path, CancellationToken ct)
-        {
-            return _this.CreateFileAsync(path, new BlankObserver<object>(), ct);
-        }
-
-        public static Task<IOwlishDirectory> CreateDirecotryAsync(this IOwlishFileSystemHost _this, IOwlishPath path, CancellationToken ct)
-        {
-            return _this.CreateDirectryAsync(path, new BlankObserver<object>(), ct);
-        }
-    }
 }

@@ -45,6 +45,7 @@
     <Compile Include="Generic\OwlishFileSystemHost.cs" />
     <Compile Include="IOwlishDirectory.cs" />
     <Compile Include="IOwlishFile.cs" />
+    <Compile Include="IOwlishProperty.cs" />
     <Compile Include="OwlishProgresses.cs" />
     <Compile Include="IOwlishFileSystemHost.cs" />
     <Compile Include="IOwlishObject.cs" />

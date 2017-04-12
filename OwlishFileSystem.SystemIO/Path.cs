@@ -7,26 +7,23 @@ namespace OwlishFileSystem.SystemIO
 {
     public class Path : IOwlishPath
     {
-        public Path(string path)
+        public Path(IOwlishFileSystemHost host, string path)
         {
             AsString = path;
+            Host = host;
         }
-
+        
         private string AsString { get; set; }
+        public IOwlishFileSystemHost Host { get; private set; }
 
         public override string ToString()
         {
             return AsString;
         }
 
-        public Path CreateCombinedPath(params string[] pathes)
-        {
-            return new Path(System.IO.Path.Combine(Enumerable.Concat<string>(new string[] { this.ToString() }, pathes).ToArray()));
-        }
-
-        IOwlishPath IOwlishPath.CreateCombinedPath(params string[] p)
-        {
-            return CreateCombinedPath(p);
-        }
+        //public Path CreateCombinedPath(params string[] pathes)
+        //{
+        //    return new Path(Host, System.IO.Path.Combine(Enumerable.Concat<string>(new string[] { this.ToString() }, pathes).ToArray()));
+        //}
     }
 }

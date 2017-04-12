@@ -7,6 +7,5 @@ namespace OwlishFileSystem
 {
     public interface IOwlishFile : IOwlishObject
     {
-        long GetSize();
     }
 }
